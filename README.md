@@ -16,5 +16,7 @@ Chef produces two random meal components (out of Hamburger, Fries, or Soda) at a
 tells him to make something else
 
 Customer #1 brings their own infinite supply of hamburgers, and are only waiting for fries and soda.
+
 Customer #2 brings their own infinite supply of fries, and are only waiting for hamburgers and soda.
+
 Customer #3 brings their own infinite supply of soda, and are only waiting for hamburgers and fries.

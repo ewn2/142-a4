@@ -25,7 +25,7 @@ int Cust2Scarfs = 0;
 int Cust3Scarfs = 0;
 int Customer = 0;
 
-pthread_mutex_t Padlock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t Bell = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t ChefSem = PTHREAD_COND_INITIALIZER;
 pthread_cond_t Ender = PTHREAD_COND_INITIALIZER;
 pthread_cond_t Fries = PTHREAD_COND_INITIALIZER;
@@ -36,9 +36,9 @@ void *Chef(){
     Customer = 0;
     while(Servings <= 100) {
         Servings++;
-        pthread_mutex_lock(&Padlock);
+        pthread_mutex_lock(&Bell);
         while(ChefMake != 0) {
-            pthread_cond_wait(&ChefSem, &Padlock);
+            pthread_cond_wait(&ChefSem, &Bell);
         }
         ChefMake = ((rand() % (3)) + 1);
         if(ChefMake == 1 && Servings <= 100) {
@@ -56,14 +56,14 @@ void *Chef(){
             pthread_cond_signal(&Soda);
             sleep(1);
         }
-        pthread_mutex_unlock(&Padlock);
+        pthread_mutex_unlock(&Bell);
     }
     pthread_cond_signal(&Ender);
 }
 
 void *Finish(){
-    pthread_mutex_lock(&Padlock);
-    pthread_cond_wait(&Ender, &Padlock);
+    pthread_mutex_lock(&Bell);
+    pthread_cond_wait(&Ender, &Bell);
     printf("\nKitchen Closed\n\n");
     printf("Customer 1 ate %d times\n", Cust1Scarfs);
     printf("Customer 2 ate %d times\n", Cust2Scarfs);
@@ -82,47 +82,47 @@ void *Finish(){
 
 void *Customer1(){
     while(Servings <= 100){
-        pthread_mutex_lock(&Padlock);
+        pthread_mutex_lock(&Bell);
         while(ChefMake != 1) {
-            pthread_cond_wait(&Hamburger, &Padlock);
+            pthread_cond_wait(&Hamburger, &Bell);
         }
         Customer = 1;
         printf("Customer #%d gets Fries and Soda, combines with their own Hamburger\n", Customer);
         pthread_cond_signal(&ChefSem);
         ChefMake = 0;
-        pthread_mutex_unlock(&Padlock);
-        printf("Customer #%d consumes full meal and rings bell\n", Customer);
+        pthread_mutex_unlock(&Bell);
+        printf("Customer #%d eats full meal and rings bell\n", Customer);
         Cust1Scarfs++;
     }
 }
 
 void *Customer2() {
     while(Servings <= 100) {
-        pthread_mutex_lock(&Padlock);
+        pthread_mutex_lock(&Bell);
         while(ChefMake != 2) {
-            pthread_cond_wait(&Fries, &Padlock);
+            pthread_cond_wait(&Fries, &Bell);
         }
         Customer = 2;
         printf("Customer #%d gets Soda and Hamburger, combines with their own Fries\n", Customer);
         pthread_cond_signal(&ChefSem);
         ChefMake = 0;
-        pthread_mutex_unlock(&Padlock);
-        printf("Customer #%d consumes full meal and rings bell\n", Customer);
+        pthread_mutex_unlock(&Bell);
+        printf("Customer #%d eats full meal and rings bell\n", Customer);
         Cust2Scarfs++;
     }
 }
 
 void *Customer3(){
     while(Servings <= 100){
-        pthread_mutex_lock(&Padlock);
+        pthread_mutex_lock(&Bell);
         while(ChefMake != 3) {
-            pthread_cond_wait(&Soda, &Padlock);
+            pthread_cond_wait(&Soda, &Bell);
         }
         Customer = 3;
         printf("Customer #%d gets Fries and Hamburger, combines with their own Soda\n", Customer);
         pthread_cond_signal(&ChefSem);
         ChefMake = 0;
-        pthread_mutex_unlock(&Padlock);
+        pthread_mutex_unlock(&Bell);
         printf("Customer #%d eats full meal and rings bell\n", Customer);
         Cust3Scarfs++;
     }

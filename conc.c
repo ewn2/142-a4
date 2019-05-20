@@ -18,19 +18,19 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-pthread_mutex_t Padlock = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t ChefSem = PTHREAD_COND_INITIALIZER;
-pthread_cond_t Ender = PTHREAD_COND_INITIALIZER;
-pthread_cond_t Fries = PTHREAD_COND_INITIALIZER;
-pthread_cond_t Hamburger = PTHREAD_COND_INITIALIZER;
-pthread_cond_t Soda = PTHREAD_COND_INITIALIZER;
-
 int ChefMake = 0;
 int Servings = 0;
 int Cust1Scarfs = 0;
 int Cust2Scarfs = 0;
 int Cust3Scarfs = 0;
 int Customer = 0;
+
+pthread_mutex_t Padlock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t ChefSem = PTHREAD_COND_INITIALIZER;
+pthread_cond_t Ender = PTHREAD_COND_INITIALIZER;
+pthread_cond_t Fries = PTHREAD_COND_INITIALIZER;
+pthread_cond_t Hamburger = PTHREAD_COND_INITIALIZER;
+pthread_cond_t Soda = PTHREAD_COND_INITIALIZER;
 
 void *Chef(){
     Customer = 0;
@@ -41,11 +41,6 @@ void *Chef(){
             pthread_cond_wait(&ChefSem, &Padlock);
         }
         ChefMake = ((rand() % (3)) + 1);
-        if(ChefMake == 3 && Servings <= 100) {
-            printf("Chef Produces Meal #%d: Fries and Hamburger and falls asleep\n", Servings);
-            pthread_cond_signal(&Soda);
-            sleep(1);
-        }
         if(ChefMake == 1 && Servings <= 100) {
             printf("Chef Produces Meal #%d: Fries and Soda and falls asleep\n", Servings);
             pthread_cond_signal(&Hamburger);
@@ -54,6 +49,11 @@ void *Chef(){
         if(ChefMake == 2 && Servings <= 100) {
             printf("Chef Produces Meal #%d: Soda and Hamburger and falls asleep\n", Servings);
             pthread_cond_signal(&Fries);
+            sleep(1);
+        }
+        if(ChefMake == 3 && Servings <= 100) {
+            printf("Chef Produces Meal #%d: Fries and Hamburger and falls asleep\n", Servings);
+            pthread_cond_signal(&Soda);
             sleep(1);
         }
         pthread_mutex_unlock(&Padlock);

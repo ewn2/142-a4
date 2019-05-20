@@ -42,17 +42,17 @@ void *Chef(){
         }
         ChefMake = ((rand() % (3)) + 1);
         if(ChefMake == 3 && Servings <= 100) {
-            printf("Chef Produces Fries and Hamburger and falls asleep\n");
+            printf("Chef Produces Meal #%d: Fries and Hamburger and falls asleep\n", Servings);
             pthread_cond_signal(&Soda);
             sleep(1);
         }
         if(ChefMake == 1 && Servings <= 100) {
-            printf("Chef Produces Fries and Soda and falls asleep\n");
+            printf("Chef Produces Meal #%d: Fries and Soda and falls asleep\n", Servings);
             pthread_cond_signal(&Hamburger);
             sleep(1);
         }
         if(ChefMake == 2 && Servings <= 100) {
-            printf("Chef Produces Soda and Hamburger and falls asleep\n");
+            printf("Chef Produces Meal #%d: Soda and Hamburger and falls asleep\n", Servings);
             pthread_cond_signal(&Fries);
             sleep(1);
         }

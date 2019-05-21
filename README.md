@@ -11,6 +11,8 @@ the full meal eat then ring the bell to wake up the chef.
 After 100 servings out of the chef, the kitchen closes for the day
 and the total amount of meals eaten by each customer is tallied.
 
+Build with: gcc -pthread conc.c -o conc
+Execute with: ./conc
 
 Chef produces two random meal components (out of Hamburger, Fries, or Soda) at a time, then goes to sleep until a customer
 tells him to make something else

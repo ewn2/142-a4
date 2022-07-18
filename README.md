@@ -1,5 +1,4 @@
-# 142-a4
-CMPE 142 - Operating Systems Assignment 4: Concurrency
+Concurrency Problem
 
 Producer-Consumer Problem that deals with 4 threads and uses
 Semaphores to prevent deadlocks
